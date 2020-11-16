@@ -1,19 +1,17 @@
 import "reflect-metadata"
-import express, {Request, Response} from "express";
+import express, {Request} from "express";
 import {buildSchema} from "type-graphql";
 import {UserResolver} from "../graphql/resolvers/userResolver";
-import {Connection} from "typeorm";
 import {ApolloServer} from "apollo-server-express";
 
-export default async ({ app, orm }: {app: express.Application, orm: Connection}) =>{
-    let em = orm.manager;
+export default async ({ app }: {app: express.Application}) =>{
 
     const server = new ApolloServer({
         schema: await buildSchema({
             resolvers: [UserResolver],
             validate: true
         }),
-        context: ({ req, res }: {req : Request, res: Response}) => ({ em: em, req, res})
+        context: (req: Request) => (req)
     });
 
     server.applyMiddleware({app});

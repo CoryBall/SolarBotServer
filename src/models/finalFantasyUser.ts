@@ -1,10 +1,10 @@
 import {Column, Entity} from "typeorm";
-import {EntityBaseEntity} from "./entityBase.entity";
+import {EntityBase} from "./entityBase";
 import {Field} from "type-graphql";
 
 
 @Entity()
-export class FinalFantasyUserEntity extends EntityBaseEntity {
+export class FinalFantasyUser extends EntityBase {
 
     @Field(() => String)
     @Column()

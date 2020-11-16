@@ -1,13 +1,5 @@
-import {EntityManager} from "typeorm";
-import {Request} from "express";
 import Discord from "discord.js";
 
-
-export type DataContext = {
-    em: EntityManager;
-    req: Request;
-    res: Response;
-}
 
 
 

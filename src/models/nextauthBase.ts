@@ -2,10 +2,10 @@ import {Column, PrimaryColumn} from "typeorm";
 import {Field, ID, ObjectType} from "type-graphql";
 
 @ObjectType()
-export abstract class NextauthBaseEntity{
+export abstract class NextauthBase{
 
     @Field(() => ID)
-    @PrimaryColumn("id")
+    @PrimaryColumn({name: "id", type: "int"})
     id: number;
 
     @Field(() => Date)

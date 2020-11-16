@@ -7,11 +7,11 @@ import express from 'express';
 
 
 export default async ({ expressApp } : {expressApp : express.Application} )  => {
-    const orm = await typeormLoader();
+    await typeormLoader();
     console.log('TypeORM Initialized');
     await expressLoader({ app: expressApp });
     console.log('Express Initialized');
-    await apolloLoader({ app: expressApp, orm: orm });
+    await apolloLoader({ app: expressApp });
     console.log('Apollo Server Initialized');
     await discordLoader();
     console.log('Loaders complete');

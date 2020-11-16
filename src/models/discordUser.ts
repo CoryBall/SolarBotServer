@@ -1,10 +1,10 @@
 import {Column, Entity} from "typeorm";
-import {EntityBaseEntity} from "./entityBase.entity";
+import {EntityBase} from "./entityBase";
 import {Field, ObjectType} from "type-graphql";
 
 @ObjectType()
 @Entity()
-export class DiscordUserEntity extends EntityBaseEntity {
+export class DiscordUser extends EntityBase {
     @Field(() => String)
     @Column()
     authToken: string;

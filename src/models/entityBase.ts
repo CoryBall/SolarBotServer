@@ -2,7 +2,7 @@ import {Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn} from
 import {Field, ID, ObjectType} from "type-graphql";
 
 @ObjectType()
-export abstract class EntityBaseEntity{
+export abstract class EntityBase{
 
     @Field(() => ID)
     @PrimaryGeneratedColumn('uuid')

@@ -1,8 +1,10 @@
-import {Ctx, Query, Resolver} from "type-graphql";
+import {Arg, Ctx, Query, Resolver} from "type-graphql";
 import {DiscordGuild, getAuthToken} from "../types";
-import {DiscordUserEntity} from "../../models/discordUser.entity";
-import {DataContext} from "../../types";
+import {Request} from 'express';
 import {DiscordAPI, PartialGuildResponse} from '../../discordAPI';
+import {NextauthSession} from "../../models/nextauthSession";
+import {NextauthUser} from "../../models/nextauthUser";
+import {getRepository} from "typeorm";
 //
 // @InputType()
 // class NewUserInput{
@@ -21,28 +23,30 @@ import {DiscordAPI, PartialGuildResponse} from '../../discordAPI';
 //     @Field(() => [FieldError], {nullable: true})
 //     error?: FieldError[]
 //
-//     @Field(() => DiscordUserEntity, {nullable: true})
-//     user?: DiscordUserEntity
+//     @Field(() => DiscordUser, {nullable: true})
+//     user?: DiscordUser
 // }
 
 @Resolver()
 export class UserResolver {
 
-    @Query(() => DiscordUserEntity, {nullable: true})
+    @Query(() => NextauthUser, {nullable: true})
     async me(
-        @Ctx(){ req , em } : DataContext
-    ) {
-        const token = getAuthToken(req);
+        @Arg("sessionToken") accessToken : string
+    ) : Promise<NextauthUser | undefined> {
+        const sessionRepository = getRepository(NextauthSession);
+        const userRepository = getRepository(NextauthUser);
 
-        const user = await em.findOne(DiscordUserEntity, {where: [{authToken : token}] });
+        const session = await sessionRepository.findOne({where: [{accessToken : accessToken}]});
 
-        if (!user) return null;
+        const user = await userRepository.findOne(session?.userId, {relations: ["accounts", "sessions"]});
+
         return user;
     }
 
     @Query(() => [DiscordGuild], {nullable: true})
     async guilds(
-        @Ctx() {req} : DataContext
+        @Ctx() req : Request
     ) {
         const token = getAuthToken(req);
 
@@ -64,7 +68,7 @@ export class UserResolver {
         return guilds;
     }
 
-    // @Query(() => DiscordUserEntity, {nullable: true})
+    // @Query(() => DiscordUser, {nullable: true})
     // async guildMembers(
     //     @Arg("guildId") guildId: string,
     //     @Ctx() {req, em} : DataContext

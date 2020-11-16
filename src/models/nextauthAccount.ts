@@ -1,9 +1,11 @@
-import {Column, Entity} from "typeorm";
-import {Field, ID} from "type-graphql";
-import {NextauthBaseEntity} from "./nextauthBase.entity";
+import {Column, Entity, JoinColumn, ManyToOne} from "typeorm";
+import {Field, ID, ObjectType} from "type-graphql";
+import {NextauthBase} from "./nextauthBase";
+import {NextauthUser} from "./nextauthUser";
 
+@ObjectType()
 @Entity({name:"nextauth_accounts", synchronize: false})
-export class NextauthAccountEntity extends NextauthBaseEntity {
+export class NextauthAccount extends NextauthBase {
 
     @Field(() => ID)
     @Column({name: 'compound_id'})
@@ -12,6 +14,11 @@ export class NextauthAccountEntity extends NextauthBaseEntity {
     @Field(() => ID)
     @Column({name: 'user_id'})
     userId: string;
+
+    @Field(() => NextauthUser)
+    @ManyToOne(() => NextauthUser, user => user.accounts)
+    @JoinColumn({name: 'user_id'})
+    user: NextauthUser;
 
     @Field(() => String)
     @Column({name: 'provider_type'})
