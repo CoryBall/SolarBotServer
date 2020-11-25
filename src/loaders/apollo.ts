@@ -1,20 +1,25 @@
-import "reflect-metadata"
-import express, {Request} from "express";
-import {buildSchema} from "type-graphql";
-import {UserResolver} from "../graphql/resolvers/userResolver";
-import {ApolloServer} from "apollo-server-express";
+import 'reflect-metadata'
+import express from 'express'
+import { buildSchema } from 'type-graphql'
+import { UserResolver } from '../graphql/resolvers/userResolver'
+import { ApolloServer } from 'apollo-server-express'
+import { GuildResolver } from '../graphql/resolvers/guildResolver'
 
-export default async ({ app }: {app: express.Application}) =>{
+export default async ({ app }: {app: express.Application}) => {
+  const server = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [UserResolver, GuildResolver],
+      validate: true
+    }),
+    introspection: true,
+    playground: true,
+    context: ({ req, res }) => ({ req, res })
+  })
 
-    const server = new ApolloServer({
-        schema: await buildSchema({
-            resolvers: [UserResolver],
-            validate: true
-        }),
-        context: (req: Request) => (req)
-    });
+  server.applyMiddleware({
+    app,
+    cors: false
+  })
 
-    server.applyMiddleware({app});
-
-    return server;
-};
+  return server
+}
