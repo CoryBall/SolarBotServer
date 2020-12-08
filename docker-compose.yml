@@ -5,9 +5,9 @@ services:
     container_name: database
     image: postgres
     environment:
-      POSTGRES_USER: $DATABASE_USERNAME
-      POSTGRES_PASSWORD: $DATABASE_PASSWORD
-      POSTGRES_DB: $DATABASE_NAME
+      POSTGRES_USER: $TYPEORM_USERNAME
+      POSTGRES_PASSWORD: $TYPEORM_PASSWORD
+      POSTGRES_DB: $TYPEORM_NAME
       PGDATA: /data/postgres
     env_file: .env
     ports:
