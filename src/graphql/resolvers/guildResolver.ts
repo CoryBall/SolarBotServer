@@ -35,7 +35,7 @@ export class GuildResolver {
   ) {
     const token = getAuthToken(req)
     if (!token) return null
-    console.log(process.env.)
+    // console.log(process.env.)
     console.log(token)
 
     const discord = new DiscordAPI(token)

@@ -23,7 +23,7 @@ This allows discord users to connect with FFXIV's API and allow managing FC memb
   + DATABASE_USERNAME
   + DATABASE_PASSWORD
   + DATABASE_NAME
-  + TYPEORM_CONNECTION = pg
+  + TYPEORM_CONNECTION = postgres
   + TYPEORM_HOST = localhost
   + TYPEORM_USERNAME
   + TYPEORM_PASSWORD
