@@ -1,26 +1,64 @@
 version: '3.3'
 
 services:
-  db:
+  database:
     container_name: database
     image: postgres
     environment:
-      POSTGRES_USER: $DATABASE_USERNAME
-      POSTGRES_PASSWORD: $DATABASE_PASSWORD
-      POSTGRES_DB: $DATABASE_NAME
+      POSTGRES_USER: $TYPEORM_USERNAME
+      POSTGRES_PASSWORD: $TYPEORM_PASSWORD
+      POSTGRES_DB: $TYPEORM_DATABASE
       PGDATA: /data/postgres
     env_file: .env
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - ../database/data:/data/postgres
     networks:
       solarbot_net:
         aliases:
           - solarbot_net_db
+      proxy:
+        aliases:
+          - solar_bot_db
+  server:
+    container_name: server
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: ghcr.io/coryball/solarbot_server
+    ports:
+      - "4000:4000"
+    environment:
+      TYPEORM_CONNECTION: $TYPEORM_CONNECTION
+      TYPEORM_HOST: $TYPEORM_HOST
+      TYPEORM_USERNAME: $TYPEORM_USERNAME
+      TYPEORM_PASSWORD: $TYPEORM_PASSWORD
+      TYPEORM_DATABASE: $TYPEORM_DATABASE
+      TYPEORM_PORT: $TYPEORM_PORT
+      TYPEORM_SYNCHRONIZE: $TYPEORM_SYNCHRONIZE
+      TYPEORM_LOGGING: $TYPEORM_LOGGING
+      TYPEORM_ENTITIES: $TYPEORM_ENTITIES
+      TYPEORM_MIGRATIONS: $TYPEORM_MIGRATIONS
+      DISCORD_BOT_TOKEN: $DISCORD_BOT_TOKEN
+      DISCORD_BOT_PREFIX: $DISCORD_BOT_PREFIX
+    env_file:
+      - .env
+    depends_on:
+      - database
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      proxy:
+        aliases:
+          - solar_bot_server
+      solarbot_net:
+        aliases:
+          - server
 
 networks:
-  portainer:
+  proxy:
     external: true
   solarbot_net:
     external: false
