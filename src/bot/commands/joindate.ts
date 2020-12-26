@@ -3,8 +3,9 @@ import {Command} from "../types";
 
 
 const command: Command = {
-    name: 'dateJoined',
+    name: 'joinDate',
     description: 'Gets the date the Guild Member joined the Guild',
+    usage: '',
     async execute(message: Message) {
         const joinedAt = message.member?.joinedAt;
         if (!joinedAt) {

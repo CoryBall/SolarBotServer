@@ -20,8 +20,8 @@ This allows discord users to connect with FFXIV's API and allow managing FC memb
 ### Steps to run this project:
 
 + Create a .env file with the following variables:
-  + TYPEORM_CONNECTION = postgres
-  + TYPEORM_HOST = localhost
+  + TYPEORM_CONNECTION=postgres
+  + TYPEORM_HOST=database
   + TYPEORM_USERNAME
   + TYPEORM_PASSWORD
   + TYPEORM_DATABASE
@@ -31,6 +31,7 @@ This allows discord users to connect with FFXIV's API and allow managing FC memb
   + TYPEORM_ENTITIES = dist/models/*{.ts,.js}
   + TYPEORM_MIGRATIONS = src/migrations/*{.ts,.js}
   + DISCORD_BOT_TOKEN
+  + DISCORD_BOT_PREFIX
 + ``yarn`` to install all dependencies
 + ``yarn dev`` That's it!
 
