@@ -2,6 +2,7 @@ import glob from 'glob';
 import { promisify } from 'util'
 import {Command} from "./types";
 import {Message, Client} from "discord.js";
+import {roleCheck} from "./utils";
 
 const globPromise = promisify(glob)
 
@@ -31,7 +32,12 @@ export default async () => {
     const command = commands.find(c => c.name == commandName)
 
     if (command) {
-      command.execute(message, args)
+      const authorized = roleCheck(command, message.member?.roles)
+      if (!authorized) {
+        message.reply(`This command requires ${command.roleNeeded} role`)
+      } else {
+        command.execute(message, args)
+      }
     }
   })
 

@@ -4,5 +4,6 @@ export interface Command {
     name: string;
     description: string;
     usage?: string;
-    execute(message: Message, args?: string[]): Promise<void>
+    roleNeeded?: string
+    execute(message: Message, args?: string[]): Promise<void>;
 }
