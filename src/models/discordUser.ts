@@ -7,7 +7,21 @@ import {Field, ObjectType} from "type-graphql";
 export class DiscordUser extends EntityBase {
     @Field(() => String)
     @Column()
-    authToken: string;
+    authToken: string | null;
+
+    @Field(() => String)
+    @Column()
+    discordId: string;
+
+    @Field(() => String)
+    @Column()
+    lodestoneId: string | null;
+
+    @Column()
+    isConfirmed: boolean;
+
+    @Column()
+    lodestoneHash: string;
 
     @Field(() => String)
     @Column()
